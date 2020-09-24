@@ -42,7 +42,7 @@ A threshold is defined for example if score becomes greater than 15 that means t
 Building the drowsiness detector with OpenCV
 To start our implementation, open up a new file, name it detect_drowsiness.py , and insert the following code:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 # import the necessary packages
 from scipy.spatial import distance as dist
@@ -64,7 +64,7 @@ We’ll also need the imutils package, my series of computer vision and image pr
 
 If you don’t already have imutils  installed on your system, you can install/upgrade imutils  via:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 $ pip install --upgrade imutils
 We’ll also import the Thread  class so we can play our alarm in a separate thread from the main thread to ensure our script doesn’t pause execution while the alarm sounds.
@@ -73,12 +73,12 @@ In order to actually play our WAV/MP3 alarm, we need the playsound library, a pu
 
 The playsound  library is conveniently installable via pip :
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 $ pip install playsound
 However, if you are using macOS (like I did for this project), you’ll also want to install pyobjc, otherwise you’ll get an error related to AppKit  when you actually try to play the sound:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 $ pip install pyobjc
 I only tested playsound  on macOS, but according to both the documentation and Taylor Marks (the developer and maintainer of playsound ), the library should work on Linux and Windows as well.
@@ -89,14 +89,14 @@ To detect and localize facial landmarks we’ll need the dlib library which is i
 
 Next, we need to define our sound_alarm  function which accepts a path  to an audio file residing on disk and then plays the file:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 def sound_alarm(path):
 	# play an alarm sound
 	playsound.playsound(path)
 We also need to define the eye_aspect_ratio  function which is used to compute the ratio of distances between the vertical eye landmarks and the distances between the horizontal eye landmarks:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 def eye_aspect_ratio(eye):
 	# compute the euclidean distances between the two sets of
@@ -128,7 +128,7 @@ You can read more about blink detection and the eye aspect ratio in my previous 
 
 Next, let’s parse our command line arguments:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -146,7 +146,7 @@ Our drowsiness detector requires one command line argument followed by two optio
 --webcam : This integer controls the index of your built-in webcam/USB camera.
 Now that our command line arguments have been parsed, we need to define a few important variables:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 # define two constants, one for the eye aspect ratio to indicate
 # blink and then a second constant for the number of consecutive
@@ -174,7 +174,6 @@ If COUNTER  exceeds EYE_AR_CONSEC_FRAMES , then we’ll update the boolean ALARM
 
 The dlib library ships with a Histogram of Oriented Gradients-based face detector along with a facial landmark predictor — we instantiate both of these in the following code block:
 
-→ Click here to download the code
 Drowsiness detection with OpenCV
 # initialize dlib's face detector (HOG-based) and then create
 # the facial landmark predictor
@@ -187,7 +186,7 @@ The facial landmarks produced by dlib are an indexable list, as I describe here:
 Figure 8: Visualizing the 68 facial landmark coordinates from the iBUG 300-W dataset (larger resolution).
 Therefore, to extract the eye regions from a set of facial landmarks, we simply need to know the correct array slice indexes:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 # grab the indexes of the facial landmarks for the left and
 # right eye, respectively
@@ -197,7 +196,7 @@ Using these indexes, we’ll easily be able to extract the eye regions via an ar
 
 We are now ready to start the core of our drowsiness detector:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 # start the video stream thread
 print("[INFO] starting video stream thread...")
@@ -225,7 +224,7 @@ Line 82 applies dlib’s face detector to find and locate the face(s) in the ima
 
 The next step is to apply facial landmark detection to localize each of the important regions of the face:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 	# loop over the face detections
 	for rect in rects:
@@ -254,7 +253,7 @@ Soukupová and Čech recommend averaging both eye aspect ratios together to obta
 
 We can then visualize each of the eye regions on our frame  by using the cv2.drawContours  function below — this is often helpful when we are trying to debug our script and want to ensure that the eyes are being correctly detected and localized:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 		# compute the convex hull for the left and right eye, then
 		# visualize each of the eyes
@@ -264,7 +263,7 @@ Drowsiness detection with OpenCV
 		cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
 Finally, we are now ready to check to see if the person in our video stream is starting to show symptoms of drowsiness:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 		# check to see if the eye aspect ratio is below the blink
 		# threshold, and if so, increment the blink frame counter
@@ -308,7 +307,7 @@ Finally, Lines 136-138 handle the case where the eye aspect ratio is larger than
 
 The final code block in our drowsiness detector handles displaying the output frame  to our screen:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 		# draw the computed eye aspect ratio on the frame to help
 		# with debugging and setting the correct eye aspect ratio
@@ -335,7 +334,7 @@ I would then suggest testing the detect_drowsiness.py  script on your local syst
 
 In my case, once I was sufficiently happy with my implementation, I moved my laptop + webcam out to my car (as detailed in the “Rigging my car with a drowsiness detector” section above), and then executed the following command:
 
-→ Click here to download the code
+
 Drowsiness detection with OpenCV
 $ python detect_drowsiness.py \
 	--shape-predictor shape_predictor_68_face_landmarks.dat \
